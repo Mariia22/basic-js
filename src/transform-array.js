@@ -14,71 +14,44 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 function transform(arr) {
-  if (!Array.isArray(arr)) { throw new Error("'arr' parameter must be an instance of the Array!") }
+  if (!Array.isArray(arr)) { throw new Error('\'arr\' parameter must be an instance of the Array!') }
   const discardNext = '--discard-next';
   const discardPrev = '--discard-prev';
   const doubleNext = '--double-next';
   const doublePrev = '--double-prev';
-  if (!(arr.includes(discardNext) || arr.includes(discardPrev) || arr.includes(doubleNext) || arr.includes(doublePrev))) { console.log(arr); return arr }
-  else {
-    const newArr = [...arr]
-    for (let i = 0; i <= newArr.length - 1; i++) {
-      if (Array.isArray(newArr[i])) {
-        transform(newArr[i])
-      }
-      else {
-        if (newArr[i] === discardNext) {
-          if ((newArr[i + 2] === doublePrev) || (newArr[i + 2] === discardPrev)) { newArr.splice(i, 3) }
-          else if (i !== newArr.length - 1) { newArr.splice(i, 2) }
-          else { newArr.splice(i, 1) }
-        }
-        else if (newArr[i] === discardPrev) {
-          if (i !== 0) { newArr.splice(i - 1, 2) }
-          else { newArr.splice(i, 1) }
-        }
-        else if (newArr[i] === doubleNext) {
-          if (newArr[i + 2] === doublePrev) { newArr.splice(i, 3, newArr[i + 1], newArr[i + 1], newArr[i + 1]) }
-          else if (newArr[i + 2] === discardPrev) { newArr.splice(i, 3, newArr[i + 1]) }
-          else if (i !== newArr.length - 1) { newArr.splice(i, 2, newArr[i - 1]) }
-          else { newArr.splice(i, 1) }
+  if (arr === [] || !(arr.includes(discardNext) || arr.includes(discardPrev) || arr.includes(doubleNext) || arr.includes(doublePrev))) { return arr }
+  let result = [];
 
-        }
-        else if (newArr[i] === doublePrev) {
-          if (i !== 0) { newArr.splice(i - 1, 2, newArr[i - 1]) }
-          else { newArr.splice(i, 1) }
-        }
-
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] == discardNext) {
+      if (i != arr.length - 1) {
+        i++;
       }
     }
-    return newArr
-    /*return newArr.map((item, index, array) => {
-      if (Array.isArray(item)) {
-        const arrItem = transform(item)
+
+    else if (arr[i] == discardPrev) {
+      if (i != 0 && arr[i - 2] != '--discard-next') {
+        result.pop();
       }
-      else {
-        if (item === discardNext) {
-          if (index !== array.length - 1) { newArr.splice(index, 2) }
-          else { newArr.splice(index, 1) }
-        }
-        else if (item === discardPrev) {
-          if (index !== 0) { newArr.splice(index - 1, 2) }
-          else { newArr.splice(index, 1) }
+    }
 
-
-        }
-        else if (item === doubleNext) {
-          if (index !== array.length - 1) { newArr.splice(index, 2, array[index - 1]) }
-          else { newArr.splice(index, 1) }
-
-        }
-        else if (item === doublePrev) {
-          if (index !== 0) { newArr.splice(index - 1, 2, array[index - 1]) }
-          else { newArr.splice(index, 1) }
-
-        }
+    else if (arr[i] == doubleNext) {
+      if (i != arr.length - 1) {
+        result.push(arr[i + 1])
       }
-    })*/
+    }
+
+    else if (arr[i] == doublePrev) {
+      if (i != 0 && arr[i - 2] != '--discard-next') {
+        result.push(arr[i - 1])
+      }
+    }
+
+    else {
+      result.push(arr[i])
+    }
   }
+  return result;
 }
 
 module.exports = {
