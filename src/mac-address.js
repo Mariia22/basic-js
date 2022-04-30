@@ -15,10 +15,19 @@ const { NotImplementedError } = require('../extensions/index.js');
  *
  */
 function isMAC48Address(n) {
-
+  const array = n.split("-")
+  if(array.length !== 6) {
+   return false
+ }
+ for(let item of array){
+ if(isNaN(parseInt(item, 16))) {
+   return false
+ }
+ }
+   return true
 }
 module.exports = {
   isMAC48Address
 };
 
-//npm run test -- test/mac-adress.test.js
+//npm run test -- test/mac-address.test.js

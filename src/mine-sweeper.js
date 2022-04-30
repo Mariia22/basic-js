@@ -23,11 +23,46 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function minesweeper(matrix) {
+  let newMatrix = []
+  for (let i = 0; i < matrix.length; i++) {
+    let newString = []
+    for (let j = 0; j < matrix[0].length; j++) {
+      let count = 0
+      if (typeof matrix[i - 1] !== 'undefined' && matrix[i - 1][j] === true) {
+        count++
+      }
+      if (typeof matrix[i + 1] !== 'undefined' && matrix[i + 1][j] === true) {
+        count++
+      }
+      if (typeof matrix[j + 1] !== 'undefined' && matrix[i][j + 1] === true) {
+        count++
+      }
+      if (typeof matrix[j - 1] !== 'undefined' && matrix[i][j - 1] === true) {
+        count++
+      }
+      if (typeof matrix[i - 1] !== 'undefined' && typeof matrix[j - 1] !== 'undefined' && matrix[i - 1][j - 1] === true) {
+        count++
+      }
+      if (typeof matrix[i + 1] !== 'undefined' && typeof matrix[j - 1] !== 'undefined' && matrix[i + 1][j - 1] === true) {
+        count++
+      }
+      if (typeof matrix[i - 1] !== 'undefined' && typeof matrix[j + 1] !== 'undefined' && matrix[i - 1][j + 1] === true) {
+        count++
+      }
+      if (typeof matrix[i + 1] !== 'undefined' && typeof matrix[j + 1] !== 'undefined' && matrix[i + 1][j + 1] === true) {
+        count++
+      }
+      newString.push(count)
+    }
+    newMatrix.push(newString)
+  }
+
+  return newMatrix;
 }
 
 module.exports = {
   minesweeper
 };
+
+//npm run test -- test/mine-sweeper.test.js

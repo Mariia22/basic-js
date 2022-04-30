@@ -19,7 +19,7 @@ function transform(arr) {
   const discardPrev = '--discard-prev';
   const doubleNext = '--double-next';
   const doublePrev = '--double-prev';
-  if (!(arr.includes(discardNext) || arr.includes(discardPrev) || arr.includes(doubleNext) || arr.includes(doublePrev))) { return arr }
+  if (!(arr.includes(discardNext) || arr.includes(discardPrev) || arr.includes(doubleNext) || arr.includes(doublePrev))) { console.log(arr); return arr }
   else {
     const newArr = [...arr]
     for (let i = 0; i <= newArr.length - 1; i++) {
